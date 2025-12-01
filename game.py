@@ -1,8 +1,11 @@
 import pygame
 
 # Game variables
+
 GAME_WIDTH = 512
 GAME_HEIGHT = 512
+
+TILE_SIZE = 32
 
 PLAYER_X = GAME_WIDTH/2
 PLAYER_Y = GAME_HEIGHT/2
@@ -29,6 +32,7 @@ player_walk_left_img = load_image("player/player_walk_left.png", (PLAYER_WIDTH, 
 player_walk_right_img = load_image("player/player_walk_right.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
 player_jump_left_img = load_image("player/player_jump_left.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
 player_jump_right_img = load_image("player/player_jump_right.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
+# floor_tile_img = load_image("floor.png", (TILE_SIZE, TILE_SIZE))
 
 pygame.init()
 window = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
