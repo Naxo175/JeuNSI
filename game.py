@@ -1,117 +1,126 @@
 import pygame
+import math
+import os
 
-# Game variables
-
-GAME_WIDTH = 512
-GAME_HEIGHT = 512
-
-TILE_SIZE = 32
-
-PLAYER_X = GAME_WIDTH/2
-PLAYER_Y = GAME_HEIGHT/2
-PLAYER_WIDTH = 120
-PLAYER_HEIGHT = 120
-PLAYER_DISTANCE = 5
-
-GRAVITY = 0.5
-FRICTION = 0.4
-PLAYER_VELOCITY_X = 5
-PLAYER_VELOCITY_Y = -10
-FLOOR_Y = GAME_HEIGHT * 3/4
-
-
-# Images
-def load_image(relative_path, scale = None):
-    image = pygame.image.load("images/" + relative_path)
-    if scale != None:
-        image = pygame.transform.scale(image, scale)
-    return image
-
-background_img = load_image("country-platform/country-platform-preview.png", (384 * 2.3, 224 * 2.3))
-player_walk_left_img = load_image("player/player_walk_left.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
-player_walk_right_img = load_image("player/player_walk_right.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
-player_jump_left_img = load_image("player/player_jump_left.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
-player_jump_right_img = load_image("player/player_jump_right.png", (PLAYER_WIDTH, PLAYER_HEIGHT))
-# floor_tile_img = load_image("floor.png", (TILE_SIZE, TILE_SIZE))
-
+# Initialisation
 pygame.init()
-window = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
-pygame.display.set_caption("Nature Finder")
-pygame.display.set_icon(player_walk_right_img)
-clock = pygame.time.Clock() # Used for the frame rate
 
+TILE_SIZE = 40
+PLAYER_SIZE = 35
 
-class Player(pygame.Rect):
-    def __init__(self):
-        pygame.Rect.__init__(self, PLAYER_X, PLAYER_Y, PLAYER_WIDTH, PLAYER_HEIGHT)
-        self.image = player_walk_right_img
-        self.velocity_x = 0
-        self.velocity_y = 0
-        self.direction = 1
-        self.jumping = False
+# Fonction utilitaire pour charger et redimensionner proprement
+def load_img(name, size):
+    path = os.path.join("sprites", name)
+    try:
+        img = pygame.image.load(path).convert_alpha()
+        return pygame.transform.scale(img, (size, size))
+    except:
+        # Si l'image manque, on crée un carré de couleur par défaut
+        surf = pygame.Surface((size, size))
+        surf.fill((255, 0, 255)) # Rose "erreur"
+        return surf
 
-    def update_image(self):
-        if self.jumping:
-            if self.direction == "right":
-                self.image = player_jump_right_img
-            elif self.direction == "left":
-                self.image = player_jump_left_img
-        else:
-            if self.direction == "right":
-                self.image = player_walk_right_img
-            elif self.direction == "left":
-                self.image = player_walk_left_img
+# --- CONFIGURATION DE LA CARTE ---
+MAP_DATA = [
+    "WWWWWWWWWWWWWWWWWWWW",
+    "WGGGGGGGGGGGGGGGGGGW",
+    "WG  P             GW",
+    "WGGGG    BBBB     GW",
+    "WDDDD    B  B     GW",
+    "WDDDD    BBBB     GW",
+    "WWWWWWWWWWWWWWWWWWWW",
+]
 
-player = Player()
+# --- CHARGEMENT DES TILES ---
+tile_images = {
+    'W': load_img("wall.png", TILE_SIZE),
+    'G': load_img("grass.png", TILE_SIZE),
+    'D': load_img("dirt.png", TILE_SIZE),
+    'B': load_img("wood.png", TILE_SIZE),
+}
 
+# --- CHARGEMENT DU JOUEUR ---
+# On mappe les directions (dx, dy) aux noms de fichiers
+player_sprites = {
+    (0, -1):  load_img("player_up.png", PLAYER_SIZE),
+    (0, 1):   load_img("player_down.png", PLAYER_SIZE),
+    (-1, 0):  load_img("player_left.png", PLAYER_SIZE),
+    (1, 0):   load_img("player_right.png", PLAYER_SIZE),
+    (-1, -1): load_img("player_up_left.png", PLAYER_SIZE),
+    (1, -1):  load_img("player_up_right.png", PLAYER_SIZE),
+    (-1, 1):  load_img("player_down_left.png", PLAYER_SIZE),
+    (1, 1):   load_img("player_down_right.png", PLAYER_SIZE),
+    (0, 0):   load_img("player_idle.png", PLAYER_SIZE),
+}
 
-def move():
-    if player.direction == "left" and player.velocity_x < 0:
-        player.velocity_x += FRICTION
-    elif player.direction == "right" and player.velocity_x > 0:
-        player.velocity_x -= FRICTION
-    else:
-        player.velocity_x = 0
+# --- GÉNÉRATION DU NIVEAU ---
+WIDTH = len(MAP_DATA[0]) * TILE_SIZE
+HEIGHT = len(MAP_DATA) * TILE_SIZE
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+clock = pygame.time.Clock()
 
+walls = []
+floor_tiles = []
+player_x, player_y = 0, 0
+current_dir = (0, 1)
 
-    player.x += player.velocity_x
+for r, row in enumerate(MAP_DATA):
+    for c, char in enumerate(row):
+        x, y = c * TILE_SIZE, r * TILE_SIZE
+        if char == 'P':
+            player_x, player_y = x, y
+        
+        # On remplit toujours le sol par de l'herbe par défaut si c'est vide
+        # ou on dessine la tuile spécifiée
+        tile_char = char if char in tile_images else 'G'
+        floor_tiles.append((tile_images[tile_char], (x, y)))
+        
+        if char in ['W', 'B']:
+            walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
 
-
-    player.velocity_y += GRAVITY
-    player.y += player.velocity_y
-
-    if player.y + player.height > FLOOR_Y:
-        player.y = FLOOR_Y - player.height
-        player.jumping = False
-
-def draw():
-    window.fill((84, 222, 158))
-    window.blit(background_img, (-200, 0))
-    player.update_image()
-    window.blit(player.image, player)
+player_rect = pygame.Rect(player_x, player_y, PLAYER_SIZE, PLAYER_SIZE)
+speed = 5
 
 running = True
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    
+        if event.type == pygame.QUIT: running = False
+
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP] and not player.jumping:
-        player.velocity_y = PLAYER_VELOCITY_Y
-        player.jumping = True
-    if keys[pygame.K_DOWN]:
-        player.y += PLAYER_DISTANCE
-    if keys[pygame.K_LEFT]:
-        player.velocity_x = -PLAYER_VELOCITY_X
-        player.direction = "left"
-    if keys[pygame.K_RIGHT]:
-        player.velocity_x = PLAYER_VELOCITY_X
-        player.direction = "right"
-            
-    move()
-    draw()
-    pygame.display.update()
-    clock.tick(60) # 60 fps
+    dx, dy = 0, 0
+    if keys[pygame.K_LEFT] or keys[pygame.K_q]:  dx = -1
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]: dx = 1
+    if keys[pygame.K_UP] or keys[pygame.K_z]:    dy = -1
+    if keys[pygame.K_DOWN] or keys[pygame.K_s]:  dy = 1
+
+    if dx != 0 or dy != 0:
+        current_dir = (dx, dy)
+        length = math.sqrt(dx**2 + dy**2)
+        dx, dy = dx/length, dy/length
+
+    # Mouvement et collisions
+    player_x += dx * speed
+    player_rect.x = int(player_x)
+    for wall in walls:
+        if player_rect.colliderect(wall):
+            player_x -= dx * speed
+            player_rect.x = int(player_x)
+
+    player_y += dy * speed
+    player_rect.y = int(player_y)
+    for wall in walls:
+        if player_rect.colliderect(wall):
+            player_y -= dy * speed
+            player_rect.y = int(player_y)
+
+    # Affichage
+    for img, pos in floor_tiles:
+        screen.blit(img, pos)
+
+    sprite_to_draw = player_sprites.get(current_dir, player_sprites[(0, 0)])
+    screen.blit(sprite_to_draw, (player_rect.x, player_rect.y))
+
+    pygame.display.flip()
+    clock.tick(60)
 
 pygame.quit()
