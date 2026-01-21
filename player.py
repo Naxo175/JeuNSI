@@ -41,6 +41,15 @@ class Player:
                     if move_vec.y > 0: self.rect.bottom = wall.top
                     if move_vec.y < 0: self.rect.top = wall.bottom
                     self.pos.y = self.rect.y
+    
+    def check_interaction(self, interactables):
+        # On crée une zone un peu plus large autour du joueur pour l'interaction
+        interaction_rect = self.rect.inflate(20, 20) 
+        for obj in interactables:
+            if interaction_rect.colliderect(obj.rect):
+                obj.interact()
+                return True
+        return False
 
     def draw(self, screen):
         sprite = self.sprites.get(self.current_dir, self.sprites[(0, 0)])
