@@ -1,25 +1,25 @@
 [
     {
-        "id": "W",
+        "id": "0",
         "name": "Water",
         "sprite": "../sprites/water.png",
         "hasCollision": true
     },
     {
-        "id": "G",
+        "id": "1",
         "name": "Grass",
         "sprite": "../sprites/grass.png",
         "hasCollision": false
     },
     {
-        "id": "R",
-        "name": "Terre",
+        "id": "2",
+        "name": "Dirt",
         "sprite": "../sprites/dirt.png",
         "hasCollision": false
     },
     {
-        "id": "S",
-        "name": "Bois",
+        "id": "3",
+        "name": "Wood",
         "sprite": "../sprites/wood.png",
         "hasCollision": true
     }

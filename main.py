@@ -1,61 +1,56 @@
 import pygame
 from settings import *
-from utils import load_img
+from utils import load_tiles_config
 from player import Player
 from interactable import Interactable
 
 pygame.init()
-# On utilise les dimensions calculées dans settings
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
-# Coordonnées actuelles dans le monde (on commence à la Map 1 en haut à gauche)
-current_map_pos = [0, 0]
+TILE_CONFIG = load_tiles_config("tiles.json", TILE_SIZE)
 
 def load_map(map_coords):
-    """Génère les objets de la map spécifiée"""
     new_walls = []
     new_floor = []
-    spawn_pos = None
     
     data = WORLD_DATA.get(tuple(map_coords), WORLD_DATA[(0,0)])
     
     for r, row in enumerate(data):
         for c, char in enumerate(row):
             x, y = c * TILE_SIZE, r * TILE_SIZE
-            if char == 'P':
-                spawn_pos = (x, y)
-                char = 'G'
             
-            tile_char = char if char in tile_images else 'G'
-            new_floor.append((tile_images[tile_char], (x, y)))
+            tile_info = TILE_CONFIG.get(char, TILE_CONFIG['1'])
+
+            new_floor.append((tile_info["image"], (x, y)))
             
-            if char in COLLISION_TILES:
+            if tile_info["collision"]:
                 new_walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
     
-    # Charger les objets de cette map
+    # Load interactables of this map
     new_interactables = []
     objs = INTERACTABLES_DATA.get(tuple(map_coords), [])
     for x, y, sprite, msg in objs:
         new_interactables.append(Interactable(x, y, sprite, msg))
-        
-    return new_floor, new_walls, spawn_pos, new_interactables
+    
+    return new_floor, new_walls, new_interactables
 
-# Initialisation du premier niveau
-tile_images = {
-    'W': load_img("water.png", TILE_SIZE),
-    'G': load_img("grass.png", TILE_SIZE),
-    'D': load_img("dirt.png", TILE_SIZE),
-    'R': load_img("water_rock1.png", TILE_SIZE),
-    'S': load_img("water_rock2.png", TILE_SIZE),
-    'T': load_img("water_rock3.png", TILE_SIZE),
-}
+# Spawn configuration
+START_MAP = [0, 0]
+START_X = 5 * TILE_SIZE
+START_Y = 6 * TILE_SIZE
 
-floor_tiles, walls, player_spawn, interactables = load_map(current_map_pos)
-player = Player(player_spawn[0], player_spawn[1])
+current_map_pos = START_MAP
+
+# Load start map
+floor_tiles, walls, interactables = load_map(current_map_pos)
+
+# Create the Player at start coordinates
+player = Player(START_X, START_Y)
 
 running = True
 while running:
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -66,50 +61,52 @@ while running:
             if event.key == pygame.K_e:
                 player.check_interaction(interactables)
 
-    # 1. Gestion des entrées et Update
+
+
+    # Inputs and Movement
     keys = pygame.key.get_pressed()
     dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] or keys[pygame.K_d] - keys[pygame.K_q]
     dy = keys[pygame.K_DOWN] - keys[pygame.K_UP] or keys[pygame.K_s] - keys[pygame.K_z]
     player.move(dx, dy, walls)
 
-    # 2. Détection de sortie d'écran (Transition)
+
+
+    # Screen exit detection (Transition)
     transition = False
     
-    # Sortie à DROITE
+    # Exit to Right -> respawns to Left
     if player.rect.left > SCREEN_WIDTH:
         current_map_pos[0] += 1
-        player.pos.x = -PLAYER_SIZE # Réapparaît à gauche
+        player.pos.x = -5
         transition = True
-    # Sortie à GAUCHE
+    # Exit to Left -> respawns to Right
     elif player.rect.right < 0:
         current_map_pos[0] -= 1
-        player.pos.x = SCREEN_WIDTH # Réapparaît à droite
+        player.pos.x = SCREEN_WIDTH-5
         transition = True
-    # Sortie en BAS
+    # Exit to Down -> respawns to Up
     elif player.rect.top > SCREEN_HEIGHT:
         current_map_pos[1] += 1
-        player.pos.y = -PLAYER_SIZE # Réapparaît en haut
+        player.pos.y = -5
         transition = True
-    # Sortie en HAUT
+    # Exit to Up -> respawns to Down
     elif player.rect.bottom < 0:
         current_map_pos[1] -= 1
-        player.pos.y = SCREEN_HEIGHT # Réapparaît en bas
+        player.pos.y = SCREEN_HEIGHT-5
         transition = True
 
-    # 3. Recharger la map si besoin
+
     if transition:
-        # On sauvegarde les anciennes coordonnées pour vérifier si on a bougé
-        old_map_pos = list(current_map_pos)
-        
         current_map_pos[0] = max(0, min(3, current_map_pos[0]))
         current_map_pos[1] = max(0, min(2, current_map_pos[1]))
-        
-        # MISE À JOUR ICI : On récupère les 4 valeurs, dont les nouveaux interactables
-        floor_tiles, walls, _, interactables = load_map(current_map_pos)
+
+        floor_tiles, walls, interactables = load_map(current_map_pos)
         
         player.rect.topleft = (int(player.pos.x), int(player.pos.y))
 
-    # 4. Dessin
+
+
+    # Draw the game
     screen.fill((0, 0, 0))
     for img, pos in floor_tiles:
         screen.blit(img, pos)
@@ -119,8 +116,13 @@ while running:
     
     for obj in interactables:
         obj.draw(screen)
+
+    # DEBUG
+    # for wall in walls:
+    #     pygame.draw.rect(screen, (255, 0, 0), wall, 1)
     
     pygame.display.flip()
     clock.tick(60)
+
 
 pygame.quit()
