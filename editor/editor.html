@@ -25,20 +25,19 @@
     const ROWS = 14;
     const COLS = 24;
 
-    // 1. Charger le fichier JSON externe
+
     async function loadTiles() {
         try {
             const response = await fetch('../tiles.json');
             tileConfig = await response.json();
             initEditor();
         } catch (error) {
-            console.error("Erreur lors du chargement du JSON :", error);
-            alert("Impossible de charger tiles.json. Assurez-vous d'utiliser un serveur local (Live Server).");
+            console.error("Error when loading JSON :", error);
+            alert("Unable to load tiles.json");
         }
     }
 
     function initEditor() {
-        // 2. Initialisation Palette
         const palette = document.getElementById('palette');
         tileConfig.forEach(tile => {
             const div = document.createElement('div');
@@ -52,7 +51,7 @@
             palette.appendChild(div);
         });
 
-        // 3. Initialisation Grille (Map par défaut : Eau "W")
+
         const grid = document.getElementById('grid');
         const waterTile = tileConfig.find(t => t.id === 'W');
         
@@ -68,6 +67,7 @@
         }
     }
 
+
     function paint(cell) {
         const tile = tileConfig.find(t => t.id === selectedTileId);
         if (tile) {
@@ -75,6 +75,7 @@
             cell.style.backgroundImage = `url('${tile.sprite}')`;
         }
     }
+
 
     function exportMap() {
         const cells = document.querySelectorAll('.cell');
@@ -89,7 +90,7 @@
         document.getElementById('export-area').value = lines.join(",\n");
     }
 
-    // Lancement au chargement de la page
+    // Load tiles on page loading
     loadTiles();
 </script>
 
