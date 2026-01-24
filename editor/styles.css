@@ -1,3 +1,4 @@
+/* --- LAYOUT GLOBAL --- */
 body {
     font-family: sans-serif;
     display: flex;
@@ -5,14 +6,7 @@ body {
     color: white;
     margin: 0;
     height: 100vh;
-}
-
-#sidebar {
-    width: 200px;
-    background: #2c3e50;
-    padding: 15px;
-    border-right: 2px solid #000;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 #editor {
@@ -24,56 +18,29 @@ body {
     background: #333;
 }
 
-/* Grille */
-#grid {
-    display: grid;
-    grid-template-columns: repeat(24, 32px);
-    grid-template-rows: repeat(14, 32px);
-    gap: 1px;
-    background: #000;
-    border: 2px solid #555;
+/* --- SIDEBAR --- */
+#sidebar {
+    width: 250px;
+    background: #2c3e50;
+    padding: 15px;
+    border-right: 2px solid #000;
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
-.cell {
-    width: 32px;
-    height: 32px;
-    background-size: cover;
-    cursor: pointer;
+#selection-info {
+    margin: 10px 0;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-/* Palette */
-.tile-select {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.tile-select:hover {
-    background: #3e5871;
-}
-
-.selected {
-    background: #f1c40f !important;
-    color: black;
-}
-
-.preview-img {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #fff;
-    background-size: cover;
-}
-
-#export-area {
-    width: 90%;
-    height: 120px;
-    margin-top: 20px;
-    font-family: monospace;
-    font-size: 11px;
+.layer-selector {
+    margin: 15px 0;
+    padding: 10px;
+    background: #34495e;
+    border-radius: 5px;
+    font-size: 0.9em;
 }
 
 button {
@@ -81,4 +48,111 @@ button {
     padding: 10px;
     cursor: pointer;
     margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.2s;
+    color: rgb(255, 255, 255);
+}
+
+#export-button
+{
+    background-color: rgb(226, 165, 33);
+}
+
+#import-button
+{
+    background-color: #2e92cc;
+    margin-top: 5px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    margin-top: 15px;
+    background: #111;
+    color: #0f0;
+    border: 1px solid #555;
+    padding: 8px;
+    font-family: monospace;
+    font-size: 10px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* --- PALETTE --- */
+#palette {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.tile-select {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #34495e;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: 0.1s;
+}
+
+.tile-select:hover {
+    background: #3e5871;
+    border-color: #bdc3c7;
+}
+
+.tile-select.selected {
+    background: #f1c40f !important;
+    border-color: #fff !important;
+}
+
+.preview-img {
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+    pointer-events: none;
+}
+
+/* --- GRILLE ET CALQUES --- */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(24, 32px);
+    grid-template-rows: repeat(14, 32px);
+    background: #000;
+    border: 2px solid #555;
+}
+
+.cell {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    cursor: crosshair;
+    background-color: #111;
+    border: 0.1px solid rgba(255, 255, 255, 0.05);
+}
+
+.layer-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+    pointer-events: none;
+}
+
+/* Outil Gomme spécifique */
+#eraser-tool .preview-img {
+    background-color: #c0392b;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 2px;
 }

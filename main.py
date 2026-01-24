@@ -3,6 +3,7 @@ from settings import *
 from utils import load_tiles_config
 from player import Player
 from interactable import Interactable
+from inventory_ui import InventoryUI
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -17,21 +18,32 @@ def load_map(map_coords):
     data = WORLD_DATA.get(tuple(map_coords), WORLD_DATA[(0,0)])
     
     for r, row in enumerate(data):
-        for c, char in enumerate(row):
+        for c, tile_stack in enumerate(row):
             x, y = c * TILE_SIZE, r * TILE_SIZE
             
-            tile_info = TILE_CONFIG.get(char, TILE_CONFIG['1'])
-
-            new_floor.append((tile_info["image"], (x, y)))
+            last_valid_tile_info = None
             
-            if tile_info["collision"]:
+            # 1. On parcourt la pile pour l'affichage
+            for tile_name in tile_stack:
+                if tile_name == " " or not tile_name:
+                    continue
+                
+                tile_info = TILE_CONFIG.get(tile_name)
+                
+                if tile_info:
+                    new_floor.append((tile_info["image"], (x, y)))
+                    # On mémorise cette tuile comme étant la "plus haute" actuelle
+                    last_valid_tile_info = tile_info
+
+            # 2. On gère la collision uniquement basée sur la tuile la plus haute
+            if last_valid_tile_info and last_valid_tile_info["collision"]:
                 new_walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
     
-    # Load interactables of this map
+    # --- Chargement des interactibles (inchangé) ---
     new_interactables = []
     objs = INTERACTABLES_DATA.get(tuple(map_coords), [])
-    for x, y, sprite, msg in objs:
-        new_interactables.append(Interactable(x, y, sprite, msg))
+    for x, y, uid, sprite, name, description in objs:
+        new_interactables.append(Interactable(x, y, uid, sprite, name, description))
     
     return new_floor, new_walls, new_interactables
 
@@ -48,6 +60,9 @@ floor_tiles, walls, interactables = load_map(current_map_pos)
 # Create the Player at start coordinates
 player = Player(START_X, START_Y)
 
+# UI
+inventory_ui = InventoryUI()
+
 running = True
 while running:
 
@@ -55,19 +70,28 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
             if event.key == pygame.K_e:
-                player.check_interaction(interactables)
+                collected_item = player.check_interaction(interactables)
+            if event.key == pygame.K_a:
+                inventory_ui.toggle()
+        
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if inventory_ui.is_open:
+                inventory_ui.handle_click(event.pos, player.inventory)
 
 
 
     # Inputs and Movement
     keys = pygame.key.get_pressed()
-    dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] or keys[pygame.K_d] - keys[pygame.K_q]
-    dy = keys[pygame.K_DOWN] - keys[pygame.K_UP] or keys[pygame.K_s] - keys[pygame.K_z]
-    player.move(dx, dy, walls)
+    dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+    dy = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+
+    if not inventory_ui.is_open:
+        player.move(dx, dy, walls)
 
 
 
@@ -108,14 +132,18 @@ while running:
 
     # Draw the game
     screen.fill((0, 0, 0))
+
     for img, pos in floor_tiles:
         screen.blit(img, pos)
+
+    for obj in interactables:
+        obj.draw(screen)
     
     if(player):
         player.draw(screen)
-    
-    for obj in interactables:
-        obj.draw(screen)
+
+    inventory_ui.draw(screen, player.inventory)
+
 
     # DEBUG
     # for wall in walls:

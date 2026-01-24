@@ -1,13 +1,13 @@
 import pygame
 from utils import load_img
-from settings import PLAYER_DISPLAY_SIZE, SPEED
+from settings import PLAYER_DISPLAY_SIZE, PLAYER_INTERACTION_AREA_SIZE, SPEED
 
 class Player:
     def __init__(self, x, y):
         self.pos = pygame.Vector2(x, y)
 
         # PARAMÈTRES AVANCÉS
-        self.hitbox_size = (35, 25)
+        self.hitbox_size = (35, 35)
         # Décalage (x, y) du centre de la hitbox par rapport à self.pos
         # Un y_offset de -10 monte la hitbox, un y_offset de 10 la descend
         self.hitbox_offset = pygame.Vector2(0, 25) 
@@ -30,6 +30,8 @@ class Player:
             (1, 1):   load_img("player_down_right.png", PLAYER_DISPLAY_SIZE),
             (0, 0):   load_img("player_idle.png", PLAYER_DISPLAY_SIZE),
         }
+
+        self.inventory = []
 
     def move(self, dx, dy, walls):
         if dx != 0 or dy != 0:
@@ -55,27 +57,29 @@ class Player:
                     if move_vec.y < 0: self.rect.top = wall.bottom
                     self.pos.y = self.rect.centery - self.hitbox_offset.y
             
-            self.update_hitbox_pos() # Toujours finir par synchroniser
+            self.update_hitbox_pos()
     
     def check_interaction(self, interactables):
-        # On crée une zone un peu plus large autour du joueur pour l'interaction
-        interaction_rect = self.rect.inflate(20, 20) 
+        print(f"Inventaire avant : {[item.id for item in self.inventory]}")
+        # Larger area around player for interaction
+        interaction_rect = self.rect.inflate(PLAYER_INTERACTION_AREA_SIZE, PLAYER_INTERACTION_AREA_SIZE) 
         for obj in interactables:
-            if interaction_rect.colliderect(obj.rect):
-                obj.interact()
-                return True
-        return False
+            if interaction_rect.colliderect(obj.rect) and obj.id not in [item.id for item in self.inventory]: # And the ID of the object is not already in the inventory
+                self.inventory.append(obj)
+                print(f"Inventaire après : {[item.id for item in self.inventory]}")
+                return obj
+        return None
     
     def update_hitbox_pos(self):
-        # On centre la hitbox sur self.pos, puis on applique l'offset
+        # Center hitbox on self.pos, then apply offset
         self.rect.center = self.pos + self.hitbox_offset
 
     def draw(self, screen):
         sprite = self.sprites.get(self.current_dir, self.sprites[(0, 0)])
         
-        # On aligne le bas du sprite sur le point de position logique
         sprite_rect = sprite.get_rect(center=self.pos)
         screen.blit(sprite, sprite_rect)
 
         # DEBUG
         # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
+        pygame.draw.rect(screen, (99, 0, 166), self.rect.inflate(PLAYER_INTERACTION_AREA_SIZE, PLAYER_INTERACTION_AREA_SIZE), 2)

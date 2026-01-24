@@ -20,9 +20,10 @@ def load_tiles_config(file_path, tile_size):
     config = {}
     for entry in data:
         # Get the file name from the JSON path (ex: "water.png")
-        sprite_name = os.path.basename(entry["sprite"])
+        sprite = os.path.basename(entry["sprite"])
         config[entry["id"]] = {
-            "image": load_img(sprite_name, tile_size),
+            "image": load_img(sprite, tile_size),
             "collision": entry["hasCollision"]
         }
+    
     return config

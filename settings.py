@@ -2,6 +2,7 @@ import os
 
 TILE_SIZE = 80
 PLAYER_DISPLAY_SIZE = 140
+PLAYER_INTERACTION_AREA_SIZE = 20
 SPEED = 10 # = 5
 
 # File pathes
@@ -11,52 +12,37 @@ SPRITES_PATH = os.path.join(BASE_PATH, "sprites")
 # Maps
 WORLD_DATA = {
     (0,0): [
-        "000000000000000000000000",
-        "000000000000000000000000",
-        "000011111111111111111000",
-        "000011111111111111111000",
-        "000011113111111111111111",
-        "00001P113113311331111000",
-        "000011111111111111111000",
-        "000001111111133111110000",
-        "000000111111111111000000",
-        "000000001111111110000000",
-        "000000000011100000000000",
-        "000000000000000000000000",
-        "000000000000000000000000",
-        "000000000000000000000000"
-    ], # Map 1
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water","water_rock2"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass","trunk_left"],["water","trunk_center"],["water","trunk_center"],["water","trunk_center"],["water","trunk_center"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water","water_rock3"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]]
+    ],
 
-    (1,0): [
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111111111111111111111111",
-        "111111111111111111111111",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000",
-        "111000111000000000000000"
-    ], # Map 2
-
-    # -> to (3,2)
+    (1, 0): [
+        # ...
+    ]
 }
 
 # Format : (map_x, map_y): [(x, y, "sprite.png", "message")]
 INTERACTABLES_DATA = {
     (0, 0): [
-        (400, 400, "chest.png", "Chest")
+        (400, 400, "fox", "fox_idle.png", "Fox", "It's a fox")
     ],
     (3, 0): [
-        (100, 500, "aaaa.png", "AAAAAA")
+        (100, 500, "a", "aaaa.png", "AAAAAA", "aaa...")
     ],
     (1, 1): [
-        (200, 200, "bbbb.png", "BBBBBB")
+        (200, 200, "b", "bbbb.png", "bBbBb", "b...!!")
     ]
 }
 

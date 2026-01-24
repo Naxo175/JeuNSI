@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Nature Finder Map Creator</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="styles.css" rel="stylesheet">
 </head>
-
 <body>
 
     <div id="sidebar">
         <h3>Tiles</h3>
         <div id="palette"></div>
+        <div id="selection-info">. . .</div>
+        <p style="color: #e74c3c; font-size: 15px">⚠️ Tiles with names in red have collision enabled !</p>
+        
+        <div class="layer-selector">
+            <label for="layer-input">Layer (0-10): </label>
+            <input type="number" id="layer-input" min="0" max="10" value="0" style="width: 50px;">
+        </div>
+
         <hr>
-        <button onclick="exportMap()">Export</button>
-        <textarea id="export-area" readonly></textarea>
-        <p style="color: rgb(255, 0, 0);">Note: Tiles with names in red have collision enabled !</p>
-        <p style="color: rgb(0, 255, 0);">Note: It is highly recommended to prevent the player from changing map when on a peripheral map by placing collision tiles.</p>
+        
+        <textarea id="export-area" placeholder="Output of your exported map... / Paste the map you want to import here..."></textarea>
+        <button onclick="exportMap()" id="export-button">Export</button>
+        <button onclick="importMap()" id="import-button">Import</button>
+
     </div>
 
     <div id="editor">
@@ -23,12 +31,10 @@
     </div>
 
     <script>
-
         let tileConfig = [];
         let selectedTileId = null;
         const ROWS = 14;
         const COLS = 24;
-
 
         async function loadTiles() {
             try {
@@ -36,68 +42,156 @@
                 tileConfig = await response.json();
                 initEditor();
             } catch (error) {
-                console.error("Error when loading JSON :", error);
-                alert("Unable to load tiles.json");
+                console.error("Error:", error);
+                alert("Erreur de chargement tiles.json");
             }
         }
 
         function initEditor() {
             const palette = document.getElementById('palette');
+            
+            // --- AJOUT DE LA GOMME DANS LA PALETTE ---
+            const eraserDiv = document.createElement('div');
+            eraserDiv.className = `tile-select`;
+            eraserDiv.id = "eraser-tool";
+            // Style visuel pour la gomme (un X rouge par exemple)
+            eraserDiv.innerHTML = `<div class="preview-img" style="display:flex; align-items:center; justify-content:center; background:#c0392b; font-weight:bold;">X</div>`;
+            
+            eraserDiv.onclick = () => {
+                document.querySelectorAll('.tile-select').forEach(el => el.classList.remove('selected'));
+                eraserDiv.classList.add('selected');
+                selectedTileId = "ERASER"; // ID spécial pour la gomme
+                document.getElementById('selection-info').innerText = `Erase a Tile`;
+                document.getElementById('selection-info').style.color = "#14ded7";
+            };
+            palette.appendChild(eraserDiv);
+            // ------------------------------------------
+
+            if (tileConfig.length > 0) {
+                // On ne sélectionne pas la gomme par défaut, mais la première tuile
+                selectedTileId = tileConfig[0].id;
+            }
+
             tileConfig.forEach(tile => {
                 const div = document.createElement('div');
-                div.className = `tile-select ${tile.id === 'W' ? 'selected' : ''}`;
-                div.innerHTML = `<div class="preview-img" style="background-image:url('${tile.sprite}')"></div> <span style="color:${tile.hasCollision ? "red" : "white"}">${tile.name} (${tile.id})</span>`;
+                div.className = `tile-select ${tile.id === selectedTileId ? 'selected' : ''}`;
+                div.innerHTML = `<div class="preview-img" style="background-image:url('${tile.sprite}')"></div>`;
                 div.onclick = () => {
                     document.querySelectorAll('.tile-select').forEach(el => el.classList.remove('selected'));
                     div.classList.add('selected');
                     selectedTileId = tile.id;
+                    document.getElementById('selection-info').innerText = `${tile.name}`;
+                    document.getElementById('selection-info').style.color = tile.hasCollision ? "#e74c3c" : "#f1c40f";
                 };
                 palette.appendChild(div);
             });
 
-
             const grid = document.getElementById('grid');
-            const defaultTile = tileConfig[0];
-
             for (let i = 0; i < ROWS * COLS; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
-                cell.dataset.id = defaultTile.id;
-                if (defaultTile) cell.style.backgroundImage = `url('${defaultTile.sprite}')`;
-
+                cell.dataset.layers = JSON.stringify(["water"]); 
+                
                 cell.onmousedown = () => paint(cell);
                 cell.onmouseover = (e) => { if (e.buttons === 1) paint(cell); };
                 grid.appendChild(cell);
+                refreshCellDisplay(cell);
             }
         }
-
 
         function paint(cell) {
-            const tile = tileConfig.find(t => t.id === selectedTileId);
-            if (tile) {
-                cell.dataset.id = tile.id;
-                cell.style.backgroundImage = `url('${tile.sprite}')`;
+            const layerIdx = parseInt(document.getElementById('layer-input').value);
+            let currentLayers = JSON.parse(cell.dataset.layers);
+            
+            while(currentLayers.length <= layerIdx) currentLayers.push(null);
+            
+            // Si la gomme est sélectionnée, on met la couche à null
+            if (selectedTileId === "ERASER") {
+                currentLayers[layerIdx] = null;
+            } else {
+                currentLayers[layerIdx] = selectedTileId;
             }
+            
+            cell.dataset.layers = JSON.stringify(currentLayers);
+            refreshCellDisplay(cell);
         }
 
+        function refreshCellDisplay(cell) {
+            cell.innerHTML = '';
+            const layers = JSON.parse(cell.dataset.layers);
+            const activeLayer = parseInt(document.getElementById('layer-input').value);
+
+            layers.forEach((id, index) => {
+                if (id) {
+                    const tile = tileConfig.find(t => t.id === id);
+                    if (tile) {
+                        const img = document.createElement('div');
+                        img.className = 'layer-img';
+                        img.style.backgroundImage = `url('${tile.sprite}')`;
+                        
+                        // Si ce n'est pas le layer sélectionné, on applique le gris
+                        if (index !== activeLayer) {
+                            img.style.filter = 'grayscale(100%) brightness(50%)';
+                            img.style.opacity = '0.6'; // Optionnel : réduit aussi l'opacité pour mieux voir
+                        } else {
+                            img.style.filter = 'none';
+                            img.style.opacity = '1';
+                        }
+                        
+                        cell.appendChild(img);
+                    }
+                }
+            });
+        }
 
         function exportMap() {
             const cells = document.querySelectorAll('.cell');
-            let lines = [];
+            let mapRows = [];
             for (let r = 0; r < ROWS; r++) {
-                let row = "";
+                let rowData = [];
                 for (let c = 0; c < COLS; c++) {
-                    row += cells[r * COLS + c].dataset.id;
+                    const layers = JSON.parse(cells[r * COLS + c].dataset.layers);
+                    // On filtre les nuls pour l'exportation
+                    rowData.push(layers.filter(l => l !== null));
                 }
-                lines.push(`"${row}"`);
+                mapRows.push(JSON.stringify(rowData));
             }
-            document.getElementById('export-area').value = lines.join(",\n");
+            document.getElementById('export-area').value = mapRows.join(",\n");
         }
 
-        // Load tiles on page loading
+        function importMap() {
+            const rawText = document.getElementById('export-area').value;
+            if (!rawText.trim()) return;
+
+            try {
+                // On reformate pour créer un JSON valide (entouré de crochets)
+                const formattedJson = "[" + rawText + "]";
+                const fullData = JSON.parse(formattedJson);
+                const cells = document.querySelectorAll('.cell');
+
+                fullData.forEach((row, r) => {
+                    if (r < ROWS) {
+                        row.forEach((cellLayers, c) => {
+                            if (c < COLS) {
+                                const cell = cells[r * COLS + c];
+                                cell.dataset.layers = JSON.stringify(cellLayers);
+                                refreshCellDisplay(cell);
+                            }
+                        });
+                    }
+                });
+            } catch (e) {
+                alert("Formatting error:\nyour map must look like this :\n[[...], [...]], [[...], [...]]");
+                console.error(e);
+            }
+        }
+
         loadTiles();
+
+        document.getElementById('layer-input').addEventListener('input', () => {
+            const allCells = document.querySelectorAll('.cell');
+            allCells.forEach(cell => refreshCellDisplay(cell));
+        });
     </script>
-
 </body>
-
 </html>
