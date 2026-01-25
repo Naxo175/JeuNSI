@@ -2,133 +2,241 @@
     {
         "id": "water",
         "name": "Water",
-        "sprite": "../sprites/water.png",
+        "sprite": "sprites/water.png",
         "hasCollision": true
     },
     {
         "id": "grass",
         "name": "Grass",
-        "sprite": "../sprites/grass.png",
+        "sprite": "sprites/grass.png",
         "hasCollision": false
     },
     {
         "id": "dirt",
         "name": "Dirt",
-        "sprite": "../sprites/dirt.png",
+        "sprite": "sprites/dirt.png",
         "hasCollision": false
     },
     {
         "id": "wood",
         "name": "Wood",
-        "sprite": "../sprites/wood.png",
+        "sprite": "sprites/wood.png",
         "hasCollision": true
     },
     {
         "id": "grass_water_br",
         "name": "Grass with water (BottomRight)",
-        "sprite": "../sprites/grass_with_water_bottom_right.png",
+        "sprite": "sprites/grass_with_water_bottom_right.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_bc",
         "name": "Grass with water (BottomCenter)",
-        "sprite": "../sprites/grass_with_water_bottom_center.png",
+        "sprite": "sprites/grass_with_water_bottom_center.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_bl",
         "name": "Grass with water (BottomLeft)",
-        "sprite": "../sprites/grass_with_water_bottom_left.png",
+        "sprite": "sprites/grass_with_water_bottom_left.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_mr",
         "name": "Grass with water (MiddleRight)",
-        "sprite": "../sprites/grass_with_water_middle_right.png",
+        "sprite": "sprites/grass_with_water_middle_right.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_ml",
         "name": "Grass with water (MiddleLeft)",
-        "sprite": "../sprites/grass_with_water_middle_left.png",
+        "sprite": "sprites/grass_with_water_middle_left.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_tr",
         "name": "Grass with water (TopRight)",
-        "sprite": "../sprites/grass_with_water_top_right.png",
+        "sprite": "sprites/grass_with_water_top_right.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_tc",
         "name": "Grass with water (TopCenter)",
-        "sprite": "../sprites/grass_with_water_top_center.png",
+        "sprite": "sprites/grass_with_water_top_center.png",
         "hasCollision": false
     },
     {
         "id": "grass_water_tl",
         "name": "Grass with water (TopLeft)",
-        "sprite": "../sprites/grass_with_water_top_left.png",
+        "sprite": "sprites/grass_with_water_top_left.png",
         "hasCollision": false
     },
     {
         "id": "water_grass_br",
         "name": "Water with grass (BottomRight)",
-        "sprite": "../sprites/water_with_grass_bottom_right.png",
+        "sprite": "sprites/water_with_grass_bottom_right.png",
         "hasCollision": false
     },
     {
         "id": "water_grass_bl",
         "name": "Water with grass (BottomLeft)",
-        "sprite": "../sprites/water_with_grass_bottom_left.png",
+        "sprite": "sprites/water_with_grass_bottom_left.png",
         "hasCollision": false
     },
     {
         "id": "water_grass_tr",
         "name": "Water with grass (TopRight)",
-        "sprite": "../sprites/water_with_grass_top_right.png",
+        "sprite": "sprites/water_with_grass_top_right.png",
         "hasCollision": false
     },
     {
         "id": "water_grass_tl",
         "name": "Water with grass (TopLeft)",
-        "sprite": "../sprites/water_with_grass_top_left.png",
+        "sprite": "sprites/water_with_grass_top_left.png",
         "hasCollision": false
     },
     {
         "id": "water_rock1",
         "name": "Water Rock 1",
-        "sprite": "../sprites/water_rock1.png",
+        "sprite": "sprites/water_rock1.png",
         "hasCollision": true
     },
     {
         "id": "water_rock2",
         "name": "Water Rock 2",
-        "sprite": "../sprites/water_rock2.png",
+        "sprite": "sprites/water_rock2.png",
         "hasCollision": true
     },
     {
         "id": "water_rock3",
         "name": "Water Rock 3",
-        "sprite": "../sprites/water_rock3.png",
+        "sprite": "sprites/water_rock3.png",
         "hasCollision": true
     },
     {
         "id": "trunk_left",
         "name": "Trunk Left",
-        "sprite": "../sprites/trunk_left.png",
+        "sprite": "sprites/trunk_left.png",
         "hasCollision": false
     },
     {
         "id": "trunk_center",
         "name": "Trunk Center",
-        "sprite": "../sprites/trunk_center.png",
+        "sprite": "sprites/trunk_center.png",
         "hasCollision": false
     },
     {
         "id": "trunk_right",
         "name": "Trunk Right",
-        "sprite": "../sprites/trunk_right.png",
+        "sprite": "sprites/trunk_right.png",
         "hasCollision": false
+    },
+    {
+        "id": "tree_tl",
+        "name": "Tree (TopLeft)",
+        "sprite": "sprites/tree_top_left.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_tc",
+        "name": "Tree (TopCenter)",
+        "sprite": "sprites/tree_top_center.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_tr",
+        "name": "Tree (TopRight)",
+        "sprite": "sprites/tree_top_right.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_ml",
+        "name": "Tree (MiddleLeft)",
+        "sprite": "sprites/tree_middle_left.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_mc",
+        "name": "Tree (MiddleCenter)",
+        "sprite": "sprites/tree_middle_center.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_mr",
+        "name": "Tree (MiddleRight)",
+        "sprite": "sprites/tree_middle_right.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_bl",
+        "name": "Tree (BottomLeft)",
+        "sprite": "sprites/tree_bottom_left.png",
+        "hasCollision": false
+    },
+    {
+        "id": "tree_bc",
+        "name": "Tree (BottomCenter)",
+        "sprite": "sprites/tree_bottom_center.png",
+        "hasCollision": true
+    },
+    {
+        "id": "tree_br",
+        "name": "Tree (BottomRight)",
+        "sprite": "sprites/tree_bottom_right.png",
+        "hasCollision": false
+    },
+    {
+        "id": "bush",
+        "name": "Bush",
+        "sprite": "sprites/bush.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_tl",
+        "name": "Bush (TopLeft)",
+        "sprite": "sprites/bush_top_left.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_tc",
+        "name": "Bush (TopCenter)",
+        "sprite": "sprites/bush_top_center.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_tr",
+        "name": "Bush (TopRight)",
+        "sprite": "sprites/bush_top_right.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_ml",
+        "name": "Bush (MiddleLeft)",
+        "sprite": "sprites/bush_middle_left.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_mr",
+        "name": "Bush (MiddleRight)",
+        "sprite": "sprites/bush_middle_right.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_bl",
+        "name": "Bush (BottomLeft)",
+        "sprite": "sprites/bush_bottom_left.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_bc",
+        "name": "Bush (BottomCenter)",
+        "sprite": "sprites/bush_bottom_center.png",
+        "hasCollision": true
+    },
+    {
+        "id": "bush_br",
+        "name": "Bush (BottomRight)",
+        "sprite": "sprites/bush_bottom_right.png",
+        "hasCollision": true
     }
 ]

@@ -11,20 +11,20 @@ SPRITES_PATH = os.path.join(BASE_PATH, "sprites")
 
 # Maps
 WORLD_DATA = {
-    (0,0): [
+    (0, 0): [
 [["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
 [["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water","water_rock2"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass","trunk_left"],["water","trunk_center"],["water","trunk_center"],["water","trunk_center"],["water","trunk_center"]],
-[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water","water_rock3"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
-[["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass","bush_tl"],["grass","bush_tc"],["grass","bush_tc"],["grass","bush_tc"],["grass","bush_tr"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass","bush_ml"],["grass"],["grass"],["grass"],["grass","bush_mr"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass","bush"],["grass"],["grass","bush_mr"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass","bush_ml"],["grass"],["grass"],["grass"],["grass","bush_mr"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass","bush_bl"],["grass","bush_bc"],["grass","bush_bc"],["grass","bush_bc"],["grass","bush_br"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass","trunk_left"],["water","trunk_center"],["water","trunk_center"],["water","trunk_center"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
+[["water"],["water"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["grass"],["water"],["water"],["water"]],
 [["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]]
     ],
 
@@ -33,16 +33,22 @@ WORLD_DATA = {
     ]
 }
 
-# Format : (map_x, map_y): [(x, y, "sprite.png", "message")]
+# Interactables
 INTERACTABLES_DATA = {
+    # Format : (map_x, map_y): [(x, y, "id", "sprite.png", "name", "description")]
     (0, 0): [
-        (400, 400, "fox", "fox_idle.png", "Fox", "It's a fox")
+        [500, 500, "ours_brun", "bear.png", "Bear", "It's a bear"],
+        [500, 500, "mesange_nonnette", "bird1.png", "Bird1", "It's a bird n°1"],
+        [500, 500, "mesange_charbonniere", "bird2.png", "Bird2", "It's a bird n°2"],
+        [500, 500, "mesange_bleue", "bird3.png", "Bird3", "It's a bird n°3"],
+        [500, 500, "mesange_a_longue_queue", "bird4.png", "Bird4", "It's a bird n°4"],
+        [500, 500, "sanglier", "boar.png", "Boar", "It's a boar"],
+        [500, 500, "cerf_elaphe", "deer.png", "Deer", "It's a deer"],
+        [400, 400, "renard_roux", "fox.png", "Fox", "It's a fox"],
+        [500, 500, "lapin_de_garenne", "rabbit.png", "Rabbit", "It's a rabbit"],
+        [500, 500, "loup_gris", "wolf.png", "Wolf", "It's a wolf"],
     ],
-    (3, 0): [
-        (100, 500, "a", "aaaa.png", "AAAAAA", "aaa...")
-    ],
-    (1, 1): [
-        (200, 200, "b", "bbbb.png", "bBbBb", "b...!!")
+    (1, 0): [
     ]
 }
 

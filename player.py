@@ -60,13 +60,12 @@ class Player:
             self.update_hitbox_pos()
     
     def check_interaction(self, interactables):
-        print(f"Inventaire avant : {[item.id for item in self.inventory]}")
         # Larger area around player for interaction
         interaction_rect = self.rect.inflate(PLAYER_INTERACTION_AREA_SIZE, PLAYER_INTERACTION_AREA_SIZE) 
         for obj in interactables:
             if interaction_rect.colliderect(obj.rect) and obj.id not in [item.id for item in self.inventory]: # And the ID of the object is not already in the inventory
                 self.inventory.append(obj)
-                print(f"Inventaire après : {[item.id for item in self.inventory]}")
+                # print(f"Inventory : {[item.id for item in self.inventory]}")
                 return obj
         return None
     
@@ -82,4 +81,4 @@ class Player:
 
         # DEBUG
         # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
-        pygame.draw.rect(screen, (99, 0, 166), self.rect.inflate(PLAYER_INTERACTION_AREA_SIZE, PLAYER_INTERACTION_AREA_SIZE), 2)
+        # pygame.draw.rect(screen, (99, 0, 166), self.rect.inflate(PLAYER_INTERACTION_AREA_SIZE, PLAYER_INTERACTION_AREA_SIZE), 2)

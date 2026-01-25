@@ -11,14 +11,18 @@
         <h3>Tiles</h3>
         <div id="palette"></div>
         <div id="selection-info">. . .</div>
-        <p style="color: #e74c3c; font-size: 15px">⚠️ Tiles with names in red have collision enabled !</p>
-        
+
         <div class="layer-selector">
             <label for="layer-input">Layer (0-10): </label>
             <input type="number" id="layer-input" min="0" max="10" value="0" style="width: 50px;">
         </div>
 
+        <p style="color: #e74c3c">⚠️ Tiles with names in red have collision enabled !</p>
+        <p style="color: #15d15d;">Only the tiles in the highest layer will affect whether this cell has collision or not.</p>
+        
+        
         <hr>
+        
         
         <textarea id="export-area" placeholder="Output of your exported map... / Paste the map you want to import here..."></textarea>
         <button onclick="exportMap()" id="export-button">Export</button>

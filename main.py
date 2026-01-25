@@ -15,13 +15,13 @@ def load_map(map_coords):
     new_walls = []
     new_floor = []
     
-    data = WORLD_DATA.get(tuple(map_coords), WORLD_DATA[(0,0)])
+    data = WORLD_DATA.get(tuple(map_coords), WORLD_DATA[(0, 0)])
     
     for r, row in enumerate(data):
         for c, tile_stack in enumerate(row):
             x, y = c * TILE_SIZE, r * TILE_SIZE
             
-            last_valid_tile_info = None
+            highest_tile_info = None
             
             # 1. On parcourt la pile pour l'affichage
             for tile_name in tile_stack:
@@ -33,17 +33,17 @@ def load_map(map_coords):
                 if tile_info:
                     new_floor.append((tile_info["image"], (x, y)))
                     # On mémorise cette tuile comme étant la "plus haute" actuelle
-                    last_valid_tile_info = tile_info
+                    highest_tile_info = tile_info
 
             # 2. On gère la collision uniquement basée sur la tuile la plus haute
-            if last_valid_tile_info and last_valid_tile_info["collision"]:
+            if highest_tile_info and highest_tile_info["collision"]:
                 new_walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
     
     # --- Chargement des interactibles (inchangé) ---
     new_interactables = []
-    objs = INTERACTABLES_DATA.get(tuple(map_coords), [])
-    for x, y, uid, sprite, name, description in objs:
-        new_interactables.append(Interactable(x, y, uid, sprite, name, description))
+    objs = INTERACTABLES_DATA.get(tuple(map_coords), WORLD_DATA[0, 0])
+    for x, y, id, sprite, name, description in objs:
+        new_interactables.append(Interactable(x, y, id, sprite, name, description))
     
     return new_floor, new_walls, new_interactables
 

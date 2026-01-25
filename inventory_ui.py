@@ -5,57 +5,76 @@ class InventoryUI:
     def __init__(self):
         self.is_open = False
         self.selected_item = None
-        # Dimensions du panneau
-        self.rect = pygame.Rect(100, 100, SCREEN_WIDTH - 200, SCREEN_HEIGHT - 200)
-        self.font = pygame.font.SysFont("Arial", 24)
-        self.title_font = pygame.font.SysFont("Arial", 32, bold=True)
+        self.loaded_cards = {}  # Cache pour les images des cartes
+        
+        # Configuration des marges
+        MARGIN_H, MARGIN_V = 200, 150
+        self.rect = pygame.Rect(MARGIN_H, MARGIN_V, SCREEN_WIDTH - (MARGIN_H * 2), SCREEN_HEIGHT - (MARGIN_V * 2))
+        
+        # Chargement du fond de carte (Grille)
+        try:
+            raw_card_bg = pygame.image.load("sprites/cards/carte_dos.png").convert_alpha()
+            self.card_bg = pygame.transform.scale(raw_card_bg, (117, 198)) # 39*3, 66*3
+        except:
+            self.card_bg = None
+        
+        self.font_medium = pygame.font.SysFont("Arial", 24)
 
     def toggle(self):
         self.is_open = not self.is_open
-        self.selected_item = None
 
     def draw(self, screen, inventory):
         if not self.is_open: return
 
-        # Fond du panneau
-        pygame.draw.rect(screen, (30, 30, 30), self.rect)
-        pygame.draw.rect(screen, (200, 200, 200), self.rect, 3)
+        # Fond principal
+        pygame.draw.rect(screen, (20, 102, 0), self.rect)
+        pygame.draw.rect(screen, (50, 50, 50), self.rect, 2)
 
-        # 1. Dessiner la grille (à gauche)
-        start_x, start_y = self.rect.x + 20, self.rect.y + 20
+        # Ligne de séparation
+        separator_x = self.rect.x + int(self.rect.width * 0.7)
+        pygame.draw.line(screen, (10, 10, 10), (separator_x, self.rect.y), (separator_x, self.rect.bottom), 5)
+
+        # 1. Grille d'objets (Gauche)
+        start_x, start_y = self.rect.x + 50, self.rect.y + 50
+        card_w, card_h = 140, 200
+
         for i, item in enumerate(inventory):
-            # Calculer la position dans la grille (5 colonnes)
-            col = i % 5
-            row = i // 5
-            slot_rect = pygame.Rect(start_x + col * 90, start_y + row * 90, 80, 80)
-            
-            # Fond du slot
-            color = (100, 100, 100) if item != self.selected_item else (241, 196, 15)
-            pygame.draw.rect(screen, color, slot_rect)
-            
-            # Icone
-            icon = pygame.transform.scale(item.image, (60, 60))
-            screen.blit(icon, (slot_rect.x + 10, slot_rect.y + 10))
-            
-            # Stocker le rect pour le clic
-            item.ui_rect = slot_rect
+            col, row = i % 5, i // 5
+            x, y = start_x + col * (card_w), start_y + row * (card_h)
+            item.ui_rect = pygame.Rect(x, y, card_w, card_h)
 
-        # 2. Panneau de détails (à droite)
+            if self.card_bg:
+                screen.blit(self.card_bg, (x, y))
+            
+            # Icone et Nom
+            icon = pygame.transform.scale(item.image, (94, 94))
+            screen.blit(icon, (x + 13, y + 23))
+            
+            name_surf = self.font_medium.render(item.name, True, (255, 255, 255))
+            screen.blit(name_surf, name_surf.get_rect(center=(x + card_w//2, y + 130)))
+
+        # 2. Affichage de la carte sélectionnée (Droite)
         if self.selected_item:
-            detail_x = self.rect.x + 500
-            # Nom
-            name_txt = self.title_font.render(self.selected_item.name, True, (255, 255, 255))
-            screen.blit(name_txt, (detail_x, self.rect.y + 50))
-            # Image agrandie
-            big_img = pygame.transform.scale(self.selected_item.image, (128, 128))
-            screen.blit(big_img, (detail_x, self.rect.y + 100))
-            # Description
-            desc_txt = self.font.render(self.selected_item.description, True, (200, 200, 200))
-            screen.blit(desc_txt, (detail_x, self.rect.y + 250))
+            card_img = self.loaded_cards.get(self.selected_item.id)
+            if card_img:
+                # Calcul pour centrer l'image dans la zone de droite
+                detail_area_w = self.rect.right - separator_x
+                img_rect = card_img.get_rect(center=(separator_x + detail_area_w // 2, self.rect.centery))
+                screen.blit(card_img, img_rect)
 
     def handle_click(self, pos, inventory):
         if not self.is_open: return
         for item in inventory:
             if hasattr(item, 'ui_rect') and item.ui_rect.collidepoint(pos):
                 self.selected_item = item
+                
+                # Charger l'image spécifique si elle n'est pas en cache
+                if item.id not in self.loaded_cards:
+                    try:
+                        path = f"sprites/cards/carte_{item.id}.png"
+                        img = pygame.image.load(path).convert_alpha()
+                        # On la scale un peu plus grande pour l'affichage de droite
+                        self.loaded_cards[item.id] = pygame.transform.scale(img, (234, 396))
+                    except:
+                        print(f"Erreur : Impossible de trouver {path}")
                 break
