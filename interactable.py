@@ -9,9 +9,5 @@ class Interactable:
         self.name = name
         self.description = description
 
-    # def interact(self):
-    #     # Pour l'instant un simple print, mais pourra déclencher n'importe quoi
-    #     print(f"Interaction : {self.message}")
-
     def draw(self, screen):
         screen.blit(self.image, self.rect)

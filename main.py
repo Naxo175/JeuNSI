@@ -9,53 +9,72 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
+# Initialisation du mixeur (si pas déjà fait via pygame.init())
+pygame.mixer.init()
+
+# Charger le fichier MP3
+# Remplace 'musique.mp3' par ton chemin de fichier
+try:
+    pygame.mixer.music.load("audio/music.mp3")
+    
+    # Jouer la musique
+    # -1 signifie que la musique boucle à l'infini
+    pygame.mixer.music.play(loops=-1)
+    
+    # Optionnel : régler le volume (0.0 à 1.0)
+    pygame.mixer.music.set_volume(0.5)
+except pygame.error as e:
+    print(f"Cannot load music : {e}")
+
 TILE_CONFIG = load_tiles_config("tiles.json", TILE_SIZE)
 
 def load_map(map_coords):
-    new_walls = []
-    new_floor = []
+    walls = []
+    tiles_below_player = []  # Layers <2
+    tiles_above_player = []  # Layers >=2
     
     data = MAPS_DATA.get(tuple(map_coords), MAPS_DATA[(0, 0)])
     
     for r, row in enumerate(data):
         for c, tile_stack in enumerate(row):
             x, y = c * TILE_SIZE, r * TILE_SIZE
-            
             highest_tile_info = None
             
-            # 1. On parcourt la pile pour l'affichage
-            for tile_name in tile_stack:
-                if tile_name == " " or not tile_name:
+            # On utilise l'index (i) pour connaître le Layer
+            for i, tile_id in enumerate(tile_stack):
+                if not tile_id:
                     continue
                 
-                tile_info = TILE_CONFIG.get(tile_name)
-                
+                tile_info = TILE_CONFIG.get(tile_id)
                 if tile_info:
-                    new_floor.append((tile_info["image"], (x, y)))
-                    # On mémorise cette tuile comme étant la "plus haute" actuelle
+                    # Séparation selon l'index de la pile
+                    if i < 2:
+                        tiles_below_player.append((tile_info["image"], (x, y)))
+                    else:
+                        tiles_above_player.append((tile_info["image"], (x, y)))
+                    
                     highest_tile_info = tile_info
 
-            # 2. On gère la collision uniquement basée sur la tuile la plus haute
             if highest_tile_info and highest_tile_info["collision"]:
-                new_walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
+                walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
     
-    # --- Chargement des interactibles (inchangé) ---
-    new_interactables = []
-    objs = INTERACTABLES_DATA.get(tuple(map_coords), MAPS_DATA[0, 0])
-    for x, y, id, sprite, name, description in objs:
-        new_interactables.append(Interactable(x, y, id, sprite, name, description))
+    # --- Chargement des interactibles ---
+    interactables = []
+    objs = INTERACTABLES_DATA.get(tuple(map_coords), [])
+    for x, y, uid, sprite, name, description in objs:
+        interactables.append(Interactable(x, y, uid, sprite, name, description))
     
-    return new_floor, new_walls, new_interactables
+    return tiles_below_player, tiles_above_player, walls, interactables
 
 # Spawn configuration
 START_MAP = [0, 0]
-START_X = 5 * TILE_SIZE
-START_Y = 6 * TILE_SIZE
+START_X = 2 * TILE_SIZE
+START_Y = 13 * TILE_SIZE
 
 current_map_pos = START_MAP
 
 # Load start map
-floor_tiles, walls, interactables = load_map(current_map_pos)
+tiles_below_player, tiles_above_player, walls, interactables = load_map(current_map_pos)
 
 # Create the Player at start coordinates
 player = Player(START_X, START_Y)
@@ -124,7 +143,7 @@ while running:
         current_map_pos[0] = max(0, min(3, current_map_pos[0]))
         current_map_pos[1] = max(0, min(2, current_map_pos[1]))
 
-        floor_tiles, walls, interactables = load_map(current_map_pos)
+        tiles_below_player, tiles_above_player, walls, interactables = load_map(current_map_pos)
         
         player.rect.topleft = (int(player.pos.x), int(player.pos.y))
 
@@ -133,7 +152,7 @@ while running:
     # Draw the game
     screen.fill((0, 0, 0))
 
-    for img, pos in floor_tiles:
+    for img, pos in tiles_below_player:
         screen.blit(img, pos)
 
     for obj in interactables:
@@ -141,6 +160,9 @@ while running:
     
     if(player):
         player.draw(screen)
+    
+    for img, pos in tiles_above_player:
+        screen.blit(img, pos)
 
     inventory_ui.draw(screen, player.inventory)
 
