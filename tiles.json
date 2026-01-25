@@ -238,5 +238,66 @@
         "name": "Bush (BottomRight)",
         "sprite": "sprites/bush_bottom_right.png",
         "hasCollision": true
+    },
+    {
+        "id": "grass_rock1",
+        "name": "Grass Rock 1",
+        "sprite": "sprites/grass_rock1.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_rock2",
+        "name": "Grass Rock 2",
+        "sprite": "sprites/grass_rock2.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_rock3",
+        "name": "Grass Rock 3",
+        "sprite": "sprites/grass_rock3.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_rock4",
+        "name": "Grass Rock 4",
+        "sprite": "sprites/grass_rock4.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_rock5",
+        "name": "Grass Rock 5",
+        "sprite": "sprites/grass_rock5.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_rock5",
+        "name": "Grass Rock 5",
+        "sprite": "sprites/grass_rock5.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_big_rock_tl",
+        "name": "Grass Big Rock (TopLeft)",
+        "sprite": "sprites/grass_big_rock_top_left.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_big_rock_tr",
+        "name": "Grass Big Rock (TopRight)",
+        "sprite": "sprites/grass_big_rock_top_right.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_big_rock_bl",
+        "name": "Grass Big Rock (BottomLeft)",
+        "sprite": "sprites/grass_big_rock_bottom_left.png",
+        "hasCollision": true
+    },
+    {
+        "id": "grass_big_rock_br",
+        "name": "Grass Big Rock (BottomRight)",
+        "sprite": "sprites/grass_big_rock_bottom_right.png",
+        "hasCollision": true
     }
+    
 ]

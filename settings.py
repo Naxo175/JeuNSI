@@ -10,7 +10,7 @@ BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 SPRITES_PATH = os.path.join(BASE_PATH, "sprites")
 
 # Maps
-WORLD_DATA = {
+MAPS_DATA = {
     (0, 0): [
 [["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],
 [["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"],["water"]],

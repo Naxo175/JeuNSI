@@ -15,7 +15,7 @@ def load_map(map_coords):
     new_walls = []
     new_floor = []
     
-    data = WORLD_DATA.get(tuple(map_coords), WORLD_DATA[(0, 0)])
+    data = MAPS_DATA.get(tuple(map_coords), MAPS_DATA[(0, 0)])
     
     for r, row in enumerate(data):
         for c, tile_stack in enumerate(row):
@@ -41,7 +41,7 @@ def load_map(map_coords):
     
     # --- Chargement des interactibles (inchangé) ---
     new_interactables = []
-    objs = INTERACTABLES_DATA.get(tuple(map_coords), WORLD_DATA[0, 0])
+    objs = INTERACTABLES_DATA.get(tuple(map_coords), MAPS_DATA[0, 0])
     for x, y, id, sprite, name, description in objs:
         new_interactables.append(Interactable(x, y, id, sprite, name, description))
     
