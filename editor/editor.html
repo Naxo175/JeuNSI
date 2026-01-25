@@ -79,7 +79,7 @@
             tileConfig.forEach(tile => {
                 const div = document.createElement('div');
                 div.className = `tile-select ${tile.id === selectedTileId ? 'selected' : ''}`;
-                div.innerHTML = `<div class="preview-img" style="background-image:url('${tile.sprite}')"></div>`;
+                div.innerHTML = `<div class="preview-img" style="background-image:url('${"../" + tile.sprite}')"></div>`;
                 div.onclick = () => {
                     document.querySelectorAll('.tile-select').forEach(el => el.classList.remove('selected'));
                     div.classList.add('selected');

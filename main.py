@@ -79,7 +79,7 @@ while running:
             if event.key == pygame.K_a:
                 inventory_ui.toggle()
         
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Left click
             if inventory_ui.is_open:
                 inventory_ui.handle_click(event.pos, player.inventory)
 

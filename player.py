@@ -64,8 +64,13 @@ class Player:
         interaction_rect = self.rect.inflate(PLAYER_INTERACTION_AREA_SIZE, PLAYER_INTERACTION_AREA_SIZE) 
         for obj in interactables:
             if interaction_rect.colliderect(obj.rect) and obj.id not in [item.id for item in self.inventory]: # And the ID of the object is not already in the inventory
-                self.inventory.append(obj)
-                # print(f"Inventory : {[item.id for item in self.inventory]}")
+                
+                if obj.id == "boat":
+                    pass
+                else:
+                    self.inventory.append(obj)
+                    # print(f"Inventory : {[item.id for item in self.inventory]}")
+
                 return obj
         return None
     
