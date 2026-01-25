@@ -131,7 +131,7 @@
                     if (tile) {
                         const img = document.createElement('div');
                         img.className = 'layer-img';
-                        img.style.backgroundImage = `url('${tile.sprite}')`;
+                        img.style.backgroundImage = `url('${"../" + tile.sprite}')`;
                         
                         // Si ce n'est pas le layer sélectionné, on applique le gris
                         if (index !== activeLayer) {
