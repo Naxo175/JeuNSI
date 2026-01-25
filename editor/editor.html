@@ -79,7 +79,16 @@
             tileConfig.forEach(tile => {
                 const div = document.createElement('div');
                 div.className = `tile-select ${tile.id === selectedTileId ? 'selected' : ''}`;
-                div.innerHTML = `<div class="preview-img" style="background-image:url('${"../" + tile.sprite}')"></div>`;
+                
+                if(tile.id === "barrier")
+                {
+                    div.innerHTML = `<div class="preview-img" style="background-image:url('../sprites/barrier_editor.png')"></div>`;
+                }
+                else
+                {
+                    div.innerHTML = `<div class="preview-img" style="background-image:url('${"../" + tile.sprite}')"></div>`;
+                }
+
                 div.onclick = () => {
                     document.querySelectorAll('.tile-select').forEach(el => el.classList.remove('selected'));
                     div.classList.add('selected');
@@ -131,7 +140,16 @@
                     if (tile) {
                         const img = document.createElement('div');
                         img.className = 'layer-img';
-                        img.style.backgroundImage = `url('${"../" + tile.sprite}')`;
+                        
+                        if(tile.id === "barrier")
+                        {
+                            img.style.backgroundImage = `url('../sprites/barrier_editor.png')`;
+                        }
+                        else
+                        {
+                            img.style.backgroundImage = `url('${"../" + tile.sprite}')`;
+                        }
+
                         
                         // Si ce n'est pas le layer sélectionné, on applique le gris
                         if (index !== activeLayer) {

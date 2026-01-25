@@ -132,6 +132,24 @@
         "hasCollision": false
     },
     {
+        "id": "trunk_top",
+        "name": "Trunk Top",
+        "sprite": "sprites/trunk_top.png",
+        "hasCollision": false
+    },
+    {
+        "id": "trunk_middle",
+        "name": "Trunk Middle",
+        "sprite": "sprites/trunk_middle.png",
+        "hasCollision": false
+    },
+    {
+        "id": "trunk_bottom",
+        "name": "Trunk Bottom",
+        "sprite": "sprites/trunk_bottom.png",
+        "hasCollision": false
+    },
+    {
         "id": "tree_tl",
         "name": "Tree (TopLeft)",
         "sprite": "sprites/tree_top_left.png",
@@ -297,6 +315,12 @@
         "id": "grass_big_rock_br",
         "name": "Grass Big Rock (BottomRight)",
         "sprite": "sprites/grass_big_rock_bottom_right.png",
+        "hasCollision": true
+    },
+    {
+        "id": "barrier",
+        "name": "Barrier",
+        "sprite": "sprites/barrier.png",
         "hasCollision": true
     }
     
