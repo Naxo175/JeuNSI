@@ -22,7 +22,7 @@ try:
     pygame.mixer.music.play(loops=-1)
     
     # Optionnel : régler le volume (0.0 à 1.0)
-    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.set_volume(1)
 except pygame.error as e:
     print(f"Cannot load music : {e}")
 
