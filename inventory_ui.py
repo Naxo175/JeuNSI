@@ -49,9 +49,6 @@ class InventoryUI:
             # Icone et Nom
             icon = pygame.transform.scale(item.image, (94, 94))
             screen.blit(icon, (x + 13, y + 23))
-            
-            name_surf = self.font_medium.render(item.name, True, (255, 255, 255))
-            screen.blit(name_surf, name_surf.get_rect(center=(x + card_w//2, y + 130)))
 
         # 2. Affichage de la carte sélectionnée (Droite)
         if self.selected_item:

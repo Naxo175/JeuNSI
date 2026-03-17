@@ -222,19 +222,53 @@ MAPS_DATA = {
 INTERACTABLES_DATA = {
     # Format : (map_x, map_y): [(x, y, "id", "sprite.png", "name", "description")]
     (0, 0): [
-        [500, 500, "ours_brun", "bear.png", "Bear", "It's a bear"],
-        [500, 500, "mesange_nonnette", "bird1.png", "Bird1", "It's a bird n°1"],
-        [500, 500, "mesange_charbonniere", "bird2.png", "Bird2", "It's a bird n°2"],
-        [500, 500, "mesange_bleue", "bird3.png", "Bird3", "It's a bird n°3"],
-        [500, 500, "mesange_a_longue_queue", "bird4.png", "Bird4", "It's a bird n°4"],
-        [500, 500, "sanglier", "boar.png", "Boar", "It's a boar"],
-        [500, 500, "cerf_elaphe", "deer.png", "Deer", "It's a deer"],
-        [400, 400, "renard_roux", "fox.png", "Fox", "It's a fox"],
-        [500, 500, "lapin_de_garenne", "rabbit.png", "Rabbit", "It's a rabbit"],
-        [500, 500, "loup_gris", "wolf.png", "Wolf", "It's a wolf"],
+        [0.5 * TILE_SIZE, 7 * TILE_SIZE, "sanglier", "boar.png", "Sanglier"]
     ],
+
     (1, 0): [
+        [17 * TILE_SIZE, 2 * TILE_SIZE, "lycopode", "yellow_plant.png", "Lycopode"]
+    ],
+
+    (2, 0): [
+        [5 * TILE_SIZE, 6.5 * TILE_SIZE, "loup_gris", "wolf.png", "Loup gris"],
+    ],
+
+    (3, 0): [
+        [10 * TILE_SIZE, 10 * TILE_SIZE, "lapin_de_garenne", "rabbit.png", "Lapin de Garenne"]
+    ],
+
+    (0, 1): [
+        [14 * TILE_SIZE, 2 * TILE_SIZE, "mesange_nonnette", "bird1.png", "Mésange nonnette"]
+    ],
+
+    (1, 1): [
+        [8 * TILE_SIZE, 7 * TILE_SIZE, "renard_roux", "fox.png", "Renard roux"]
+    ],
+
+    (2, 1): [
+        [9 * TILE_SIZE, 12 * TILE_SIZE, "cerf_elaphe", "deer.png", "Cerf élaphe"]
+    ],
+
+    (3, 1): [
+        [21 * TILE_SIZE, 1 * TILE_SIZE, "anacamptis_coriophora", "red_plant.png", "Anacamptis Coriophora"]
+    ],
+
+    (0, 2): [
+        [8 * TILE_SIZE, 7 * TILE_SIZE, "mesange_charbonniere", "bird2.png", "Mésange charbonnière"],
+    ],
+
+    (1, 2): [
+        [10.75 * TILE_SIZE, 7.5 * TILE_SIZE, "mesange_bleue", "bird3.png", "Mésange bleue"],
+    ],
+
+    (2, 2): [
+        [5 * TILE_SIZE, 5 * TILE_SIZE, "mesange_a_longue_queue", "bird4.png", "Mésange à longue queue"],
+    ],
+
+    (3, 2): [
+        [7 * TILE_SIZE, 5 * TILE_SIZE, "ours_brun", "bear.png", "Ours brun"],
     ]
+        
 }
 
 # Screen dimensions
