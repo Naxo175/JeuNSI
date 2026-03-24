@@ -1,5 +1,6 @@
 import pygame
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT
+from utils import load_img, resource_path
 
 class InventoryUI:
     def __init__(self):
@@ -12,11 +13,8 @@ class InventoryUI:
         self.rect = pygame.Rect(MARGIN_H, MARGIN_V, SCREEN_WIDTH - (MARGIN_H * 2), SCREEN_HEIGHT - (MARGIN_V * 2))
         
         # Chargement du fond de carte (Grille)
-        try:
-            raw_card_bg = pygame.image.load("sprites/cards/carte_dos.png").convert_alpha()
-            self.card_bg = pygame.transform.scale(raw_card_bg, (117, 198)) # 39*3, 66*3
-        except:
-            self.card_bg = None
+        raw_card_bg = load_img("carte_dos.png", 64)
+        self.card_bg = pygame.transform.scale(raw_card_bg, (117, 198)) # 39*3, 66*3
         
         self.font_medium = pygame.font.SysFont("Arial", 24)
 
@@ -67,11 +65,8 @@ class InventoryUI:
                 
                 # Charger l'image spécifique si elle n'est pas en cache
                 if item.id not in self.loaded_cards:
-                    try:
-                        path = f"sprites/cards/carte_{item.id}.png"
-                        img = pygame.image.load(path).convert_alpha()
-                        # On la scale un peu plus grande pour l'affichage de droite
-                        self.loaded_cards[item.id] = pygame.transform.scale(img, (234, 396))
-                    except:
-                        print(f"Erreur : Impossible de trouver {path}")
+                    path = f"carte_{item.id}.png"
+                    img = load_img(path, 1000)
+                    # On la scale un peu plus grande pour l'affichage de droite
+                    self.loaded_cards[item.id] = pygame.transform.scale(img, (234, 396))
                 break

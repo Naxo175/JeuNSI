@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from utils import load_tiles_config
+from utils import load_tiles_config, resource_path
 from player import Player
 from interactable import Interactable
 from inventory_ui import InventoryUI
@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 pygame.mixer.init() # Initialise le système audio
 
 try:
-    pygame.mixer.music.load("audio/music.ogg") # Charge le fichier audio
+    pygame.mixer.music.load(resource_path("audio/music.ogg")) # Charge le fichier audio
     pygame.mixer.music.play(loops=-1) # Lance la lecture en boucle
     pygame.mixer.music.set_volume(1) # Règle le volume
 except pygame.error as e:
